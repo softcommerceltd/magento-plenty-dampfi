@@ -12,7 +12,6 @@ use Elogic\Extrafee\Helper\Data as ExtraFeeHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\InventorySalesApi\Model\GetSkuFromOrderItemInterface;
 use Magento\InventoryShipping\Model\ResourceModel\ShipmentSource\GetSourceCodeByShipmentId;
 use Magento\Store\Model\ScopeInterface;
@@ -33,8 +32,8 @@ use SoftCommerce\Profile\Model\ServiceAbstract\ProcessorInterface;
  */
 class ExtraFee extends ItemAbstract implements ProcessorInterface
 {
-    public const METADATA_FEE = 'fee';
-    public const XML_PATH_IS_ACTIVE_MODULE_EXTRAFEE = 'Extrafee/Extrafee/status';
+    private const METADATA_FEE = 'fee';
+    private const XML_PATH_EXTRAFEE_STATUS = 'Extrafee/Extrafee/status';
 
     /**
      * @var ExtraFeeHelper
@@ -99,10 +98,10 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
     }
 
     /**
+     * @return void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
-    public function generate(): void
+    private function generate(): void
     {
         $salesOrder = $this->getContext()->getSalesOrder();
         $amount = $salesOrder->getData(self::METADATA_FEE);
@@ -141,12 +140,11 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
     /**
      * @return bool
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     private function canProcess(): bool
     {
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_IS_ACTIVE_MODULE_EXTRAFEE,
+        return !!$this->scopeConfig->getValue(
+            self::XML_PATH_EXTRAFEE_STATUS,
             ScopeInterface::SCOPE_STORE,
             $this->getContext()->getSalesOrder()->getStoreId()
         );
