@@ -13,8 +13,8 @@
             "registration.php"
         ],
         "psr-4": {
-            "SoftCommerce\\Dampfi\\": ""
+            "SoftCommerce\\PlentyDampfi\\": ""
         }
     },
-    "version": "1.0.0"
+    "version": "1.0.1"
 }
