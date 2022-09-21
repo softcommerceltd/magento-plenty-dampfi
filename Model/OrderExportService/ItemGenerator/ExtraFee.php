@@ -19,6 +19,7 @@ use SoftCommerce\Core\Framework\DataStorageInterfaceFactory;
 use SoftCommerce\Core\Framework\MessageStorageInterfaceFactory;
 use SoftCommerce\Core\Framework\SearchMultidimensionalArrayInterface;
 use SoftCommerce\PlentyOrder\Model\GetSalesOrderTaxRateInterface;
+use SoftCommerce\PlentyOrder\Model\SalesOrderReservationRepositoryInterface;
 use SoftCommerce\PlentyOrderClient\Api\ShippingCountryRepositoryInterface;
 use SoftCommerce\PlentyOrderProfile\Model\OrderExportService\Generator\Order\Items\ItemAbstract;
 use SoftCommerce\PlentyOrderRestApi\Model\OrderInterface as HttpClient;
@@ -46,6 +47,7 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
      * @param GetSalesOrderTaxRateInterface $getSalesOrderTaxRate
      * @param GetSkuFromOrderItemInterface $getSkuFromOrderItem
      * @param GetSourceCodeByShipmentId $getSourceCodeByShipmentIdRepository
+     * @param SalesOrderReservationRepositoryInterface $salesOrderReservationRepository
      * @param SearchMultidimensionalArrayInterface $searchMultidimensionalArray
      * @param ScopeConfigInterface $scopeConfig
      * @param ShippingCountryRepositoryInterface $shippingCountryRepository
@@ -61,6 +63,7 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
         GetSalesOrderTaxRateInterface $getSalesOrderTaxRate,
         GetSkuFromOrderItemInterface $getSkuFromOrderItem,
         GetSourceCodeByShipmentId $getSourceCodeByShipmentIdRepository,
+        SalesOrderReservationRepositoryInterface $salesOrderReservationRepository,
         SearchMultidimensionalArrayInterface $searchMultidimensionalArray,
         ScopeConfigInterface $scopeConfig,
         ShippingCountryRepositoryInterface $shippingCountryRepository,
@@ -76,6 +79,7 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
             $getSalesOrderTaxRate,
             $getSkuFromOrderItem,
             $getSourceCodeByShipmentIdRepository,
+            $salesOrderReservationRepository,
             $searchMultidimensionalArray,
             $scopeConfig,
             $shippingCountryRepository,
