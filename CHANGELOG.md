@@ -1,5 +1,8 @@
 ## Changelog
 
+### Version 1.0.3
+- **Compatibility**: Compatibility with `SoftCommerce_PlentyOrderProfile` version 1.4.2.
+
 ### Version 1.0.2
 - **Compatibility**: Added compatibility to `SoftCommerce\PlentyDampfi\Model\OrderExportService\ItemGenerator\ExtraFee`.
 

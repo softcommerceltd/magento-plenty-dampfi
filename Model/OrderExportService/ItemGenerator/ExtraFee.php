@@ -39,7 +39,7 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
     /**
      * @var ExtraFeeHelper
      */
-    private $helper;
+    private ExtraFeeHelper $helper;
 
     /**
      * @param ExtraFeeHelper $helper
@@ -109,6 +109,7 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
     {
         $salesOrder = $this->getContext()->getSalesOrder();
         $amount = $salesOrder->getData(self::METADATA_FEE);
+
         if (!$this->canProcess() || $amount < 0.0001) {
             return;
         }
