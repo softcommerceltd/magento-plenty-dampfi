@@ -22,7 +22,9 @@ use SoftCommerce\PlentyOrder\Model\GetSalesOrderTaxRateInterface;
 use SoftCommerce\PlentyOrder\Model\SalesOrderReservationRepositoryInterface;
 use SoftCommerce\PlentyOrderClient\Api\ShippingCountryRepositoryInterface;
 use SoftCommerce\PlentyOrderProfile\Model\OrderExportService\Generator\Order\Items\ItemAbstract;
+use SoftCommerce\PlentyOrderProfile\Model\OrderExportService\Processor\Order as OrderProcessor;
 use SoftCommerce\PlentyOrderRestApi\Model\OrderInterface as HttpClient;
+use SoftCommerce\PlentyOrderRestApi\Model\OrderInterface as HttpOrderClient;
 use SoftCommerce\PlentyStock\Model\GetOrderItemSourceSelectionInterface;
 use SoftCommerce\PlentyStockProfile\Model\Config\StockConfigInterfaceFactory;
 use SoftCommerce\Profile\Model\ServiceAbstract\ProcessorInterface;
@@ -107,7 +109,8 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
      */
     private function generate(): void
     {
-        $salesOrder = $this->getContext()->getSalesOrder();
+        $context = $this->getContext();
+        $salesOrder = $context->getSalesOrder();
         $amount = $salesOrder->getData(self::METADATA_FEE);
 
         if (!$this->canProcess() || $amount < 0.0001) {
@@ -124,12 +127,14 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
             HttpClient::IS_PERCENTAGE => false
         ];
 
-        $this->getRequestStorage()->addData(
+        $referrerId = (float) $context->storeConfig()->getReferrerIdByStoreId(
+            (int) $salesOrder->getStoreId()
+        );
+
+        $context->getRequestStorage()->addData(
             [
                 HttpClient::TYPE_ID => HttpClient::ITEM_TYPE_PAYMENT_SURCHARGE,
-                HttpClient::REFERRER_ID => $this->getContext()->orderConfig()->getOrderReferrerId(
-                    $salesOrder->getStoreId()
-                ),
+                HttpClient::REFERRER_ID => $referrerId,
                 HttpClient::QUANTITY => 1,
                 HttpClient::COUNTRY_VAT_ID => $this->getCountryId(
                     $salesOrder->getBillingAddress()->getCountryId()
@@ -138,7 +143,8 @@ class ExtraFee extends ItemAbstract implements ProcessorInterface
                 HttpClient::VAT_RATE => 0,
                 HttpClient::ORDER_ITEM_NAME => $this->helper->getFeeLabel() ?: __('Extra fee'),
                 HttpClient::AMOUNTS => $amounts,
-            ]
+            ],
+            [OrderProcessor::TYPE_ID, HttpOrderClient::ORDER_ITEMS]
         );
     }
 
