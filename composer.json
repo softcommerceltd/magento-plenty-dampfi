@@ -2,7 +2,7 @@
     "name": "softcommerce/module-plenty-dampfi",
     "description": "Dampfi module that extends functionality of PlentyMarkets connector.",
     "require": {
-        "php": "~8.0.0||~8.1.0||~8.2.0",
+        "php": "~8.0.0||~8.1.0||~8.2.0||~8.3.0",
         "softcommerce/module-plenty-client": "*",
         "magento/magento-composer-installer": "*"
     },
@@ -16,5 +16,5 @@
             "SoftCommerce\\PlentyDampfi\\": ""
         }
     },
-    "version": "1.0.4"
+    "version": "1.0.5"
 }
